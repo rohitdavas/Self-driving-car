@@ -1,6 +1,7 @@
 import pandas as pd # data analysis toolkit - create, read, update, delete datasets
 import numpy as np #matrix math
 import tensorflow as tf
+
 #import keras
 from sklearn.model_selection import train_test_split #to split out training and testing data 
 #keras is a high level wrapper on top of tensorflow (machine learning library)
@@ -84,9 +85,12 @@ def build_model(args):
 
 def train_model(model, args, X_train, X_valid, y_train, y_valid):
     import os
-    resolver = tf.contrib.cluster_resolver.TPUClusterResolver('grpc://' + os.environ['COLAB_TPU_ADDR'])
-    tf.contrib.distribute.initialize_tpu_system(resolver)
-    strategy = tf.contrib.distribute.TPUStrategy(resolver)
+    try:
+        device_name = os.environ[‘COLAB_TPU_ADDR’]
+        TPU_ADDRESS = ‘grpc://’ + device_name
+        print(‘Found TPU at: {}’.format(TPU_ADDRESS))
+    except KeyError:
+        print(‘TPU not found’)
 
     with strategy.scope():  
         checkpoint = ModelCheckpoint('model-{epoch:03d}.h5',
@@ -95,9 +99,14 @@ def train_model(model, args, X_train, X_valid, y_train, y_valid):
                                  save_best_only=args.save_best_only,
                                  mode='auto')
 
-        model.compile(loss='mean_squared_error', optimizer=Adam(lr=args.learning_rate))
+        model.compile(loss='mean_squared_error', tf.train.AdamOptimizer(lr=args.learning_rate), metrics = ['accuracy'])
+        tpu_model = tf.contrib.tpu.keras_to_tpu_model(
+                                                    model,
+                                                    strategy=tf.contrib.tpu.TPUDistributionStrategy(
+                                                    tf.contrib.cluster_resolver.TPUClusterResolver(TPU_ADDRESS))
+                                                    )
 
-        model.fit_generator(batch_generator(data_dir2 = IMG_path, image_paths = X_train,steering_angles = y_train,batch_size = args.batch_size, is_training = True),
+        tpu_model.fit_generator(batch_generator(data_dir2 = IMG_path, image_paths = X_train,steering_angles = y_train,batch_size = args.batch_size, is_training = True),
                         args.samples_per_epoch,
                         args.nb_epoch,
                         max_q_size=1,
