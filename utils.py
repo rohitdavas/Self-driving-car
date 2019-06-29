@@ -6,11 +6,11 @@ IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 66, 200, 3
 INPUT_SHAPE = (IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS)
 #data_dir2 = './data/IMG/'
 
-def load_image(data_dir2, image_file):
+def load_image(image_file):
     """
     Load RGB images from a file
     """
-    return mpimg.imread(data_dir2, image_file.strip())
+    return mpimg.imread(image_file.strip())
 
 def crop(image):
     return image[60:-25, :, :] 
