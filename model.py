@@ -20,14 +20,15 @@ import os
 
 #for debugging, allows for reproducible (deterministic) results 
 np.random.seed(0)
-
+IMG_path = 'content/Self_driving/data/IMG'
+CSV_path = 'content/Self_driving/data/driving_log.csv'
 
 def load_data(args):
     """
     Load training data and split it into training and validation set
     """
     #reads CSV file into a single dataframe variable
-    data_df = pd.read_csv('./data/driving_log.csv', names=['center', 'left', 'right', 'steering', 'throttle', 'reverse', 'speed'])
+    data_df = pd.read_csv(CSV_path, names=['center', 'left', 'right', 'steering', 'throttle', 'reverse', 'speed'])
 
     #yay dataframes, we can select rows and columns by their names
     #we'll store the camera images as our input data
@@ -87,11 +88,11 @@ def train_model(model, args, X_train, X_valid, y_train, y_valid):
                                  save_best_only=args.save_best_only,
                                  mode='auto')
     model.compile(loss='mean_squared_error', optimizer=Adam(lr=args.learning_rate))
-    model.fit_generator(batch_generator(data_dir2 ='./data/IMG/', image_paths = X_train,steering_angles = y_train,batch_size = args.batch_size, is_training = True),
+    model.fit_generator(batch_generator(data_dir2 = IMG_path, image_paths = X_train,steering_angles = y_train,batch_size = args.batch_size, is_training = True),
                         args.samples_per_epoch,
                         args.nb_epoch,
                         max_q_size=1,
-                        validation_data=batch_generator(data_dir2 ='./data/IMG/',image_paths = X_valid, steering_angles =  y_valid, batch_size = args.batch_size, is_training =  False),
+                        validation_data=batch_generator(data_dir2 = IMG_path,image_paths = X_valid, steering_angles =  y_valid, batch_size = args.batch_size, is_training =  False),
                         nb_val_samples=len(X_valid),
                         callbacks=[checkpoint],
                         verbose=1)
