@@ -10,14 +10,11 @@ def load_image(data_dir2, image_file):
     """
     Load RGB images from a file
     """
-    return mpimg.imread(data_dir2, image_file.strip()
-
+    return mpimg.imread(data_dir2, image_file.strip())
 
 def crop(image):
-    """
-    Crop the image (removing the sky at the top and the car front at the bottom)
-    """
-    return image[60:-25, :, :] # remove the sky and the car front
+    return image[60:-25, :, :] 
+    # remove the sky and the car front
 
 
 def resize(image):
