@@ -48,10 +48,10 @@ def choose_image(data_dir2, center, left, right, steering_angle):
     """
     choice = np.random.choice(3)
     if choice == 0:
-        return load_image(data_dir2, left), steering_angle + 0.2
+        return load_image(left), steering_angle + 0.2
     elif choice == 1:
-        return load_image(data_dir2, right), steering_angle - 0.2
-    return load_image(data_dir2, center), steering_angle
+        return load_image(right), steering_angle - 0.2
+    return load_image(center), steering_angle
 
 
 def random_flip(image, steering_angle):
