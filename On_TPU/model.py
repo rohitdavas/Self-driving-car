@@ -84,20 +84,19 @@ def build_model(args):
 
 
 def train_model(model, args, X_train, X_valid, y_train, y_valid):
+        checkpoint = ModelCheckpoint('model-{epoch:03d}.h5',
+                                 monitor='val_loss',
+                                 verbose=0,
+                                 save_best_only=args.save_best_only,
+                                 mode='auto')
+
+    model.compile(loss='mean_squared_error',optimizer =  tf.train.AdamOptimizer(lr=args.learning_rate), metrics = ['accuracy'])
     tpu_model = tf.contrib.tpu.keras_to_tpu_model(
                                                 model,
                                                 strategy=tf.contrib.tpu.TPUDistributionStrategy(
                                                 tf.contrib.cluster_resolver.TPUClusterResolver(tpu='grpc://' + os.environ['COLAB_TPU_ADDR'])
                                                 )
                                             )
-
-    checkpoint = ModelCheckpoint('model-{epoch:03d}.h5',
-                                 monitor='val_loss',
-                                 verbose=0,
-                                 save_best_only=args.save_best_only,
-                                 mode='auto')
-
-    tpu_model.compile(loss='mean_squared_error',optimizer =  tf.train.AdamOptimizer(lr=args.learning_rate), metrics = ['accuracy'])
     tpu_model.fit_generator(batch_generator(data_dir2 = IMG_path, image_paths = X_train,steering_angles = y_train,batch_size = args.batch_size, is_training = True),
                              args.samples_per_epoch,
                             args.nb_epoch,
