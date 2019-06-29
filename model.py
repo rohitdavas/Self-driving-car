@@ -20,8 +20,8 @@ import argparse
 
 #for debugging, allows for reproducible (deterministic) results 
 np.random.seed(0)
-IMG_path = 'data/IMG'
-CSV_path = 'data/driving_log.csv'
+IMG_path = './data/IMG'
+CSV_path = './data/driving_log.csv'
 
 def load_data(args):
     """
