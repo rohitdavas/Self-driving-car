@@ -5,7 +5,7 @@ import matplotlib.image as mpimg
 
 IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 66, 200, 3
 INPUT_SHAPE = (IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS)
-
+data_dir2 = './data/IMG/'
 
 def load_image(data_dir2, image_file):
     """
