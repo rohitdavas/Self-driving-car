@@ -97,7 +97,7 @@ def train_model(model, args, X_train, X_valid, y_train, y_valid):
                                  save_best_only=args.save_best_only,
                                  mode='auto')
 
-    tpu_model.compile(loss='mean_squared_error', tf.train.AdamOptimizer(lr=args.learning_rate), metrics = ['accuracy'])
+    tpu_model.compile(loss='mean_squared_error',optimizer =  tf.train.AdamOptimizer(lr=args.learning_rate), metrics = ['accuracy'])
     tpu_model.fit_generator(batch_generator(data_dir2 = IMG_path, image_paths = X_train,steering_angles = y_train,batch_size = args.batch_size, is_training = True),
                              args.samples_per_epoch,
                             args.nb_epoch,
