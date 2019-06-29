@@ -16,7 +16,7 @@ from utils import INPUT_SHAPE, batch_generator
 #for command line arguments
 import argparse
 #for reading files
-import os
+#import os
 
 #for debugging, allows for reproducible (deterministic) results 
 np.random.seed(0)
@@ -92,7 +92,7 @@ def train_model(model, args, X_train, X_valid, y_train, y_valid):
                         args.samples_per_epoch,
                         args.nb_epoch,
                         max_q_size=1,
-                        validation_data=batch_generator(data_dir2 = IMG_path,image_paths = X_valid, steering_angles =  y_valid, batch_size = args.batch_size, is_training =  False),
+                        validation_data=batch_generator(data_dir2 = IMG_path, image_paths = X_valid, steering_angles =  y_valid, batch_size = args.batch_size, is_training =  False),
                         nb_val_samples=len(X_valid),
                         callbacks=[checkpoint],
                         verbose=1)

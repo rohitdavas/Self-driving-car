@@ -10,7 +10,7 @@ def load_image(data_dir2, image_file):
     """
     Load RGB images from a file
     """
-    return mpimg.imread(os.path.join(data_dir2, image_file.strip()))
+    return mpimg.imread(data_dir2, image_file.strip())
 
 
 def crop(image):
