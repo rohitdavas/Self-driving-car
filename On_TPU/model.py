@@ -90,7 +90,7 @@ def train_model(model, args, X_train, X_valid, y_train, y_valid):
                                  save_best_only=args.save_best_only,
                                  mode='auto')
 
-    model.compile(loss='mean_squared_error',optimizer =  tf.train.AdamOptimizer(lr=args.learning_rate), metrics = ['accuracy'])
+    model.compile(loss='mean_squared_error',optimizer =  tf.train.AdamOptimizer(learning_rate =args.learning_rate), metrics = ['accuracy'])
     tpu_model = tf.contrib.tpu.keras_to_tpu_model(
                                                 model,
                                                 strategy=tf.contrib.tpu.TPUDistributionStrategy(
