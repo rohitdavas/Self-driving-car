@@ -20,8 +20,8 @@ import os
 
 #for debugging, allows for reproducible (deterministic) results 
 np.random.seed(0)
-IMG_path = 'content/Self_driving/data/IMG'
-CSV_path = 'content/Self_driving/data/driving_log.csv'
+IMG_path = '/content/Self_driving/data/IMG'
+CSV_path = '/content/Self_driving/data/driving_log.csv'
 
 def load_data(args):
     """
